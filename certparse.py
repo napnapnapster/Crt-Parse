@@ -10,13 +10,17 @@ def get_page(domain):
     return soup
 
 def get_row(soup):
-    table = soup.find_all('table')[2]
-    rows = []
-    for i in table.find_all('tr')[1:]:
-        rdata = i.text.strip().split('\n')
-        rows.append(rdata)
-    return rows
-    
+    try:
+        table = soup.find_all('table')[2]
+        rows = []
+        for i in table.find_all('tr')[1:]:
+            rdata = i.text.strip().split('\n')
+            rows.append(rdata)
+        return rows
+    except(Exception):
+        print("There are no certificates available for this domain, check domain and try again.")  
+        sys.exit(1)  
+
 def get_content(rows,output):
     idlist = []
     loglist = []
@@ -82,7 +86,9 @@ def main():
             get_content(row,output)
         
     except(KeyboardInterrupt):
+        print("Bye..")
         sys.exit(1)
+        
 
 if __name__ == "__main__":
 	main()
